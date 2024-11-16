@@ -1,0 +1,5 @@
+python3 -m venv venv
+source ./venv/bin/activate
+pip3 install pyperclip
+pip install -qU langchain-community beautifulsoup4
+pip install -qU langchain-unstructured
