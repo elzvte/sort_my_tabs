@@ -1,5 +1,9 @@
 import requests, sys
 from bs4 import BeautifulSoup
+import litellm
+
+from categories import categories
+llm = ...
 
 def get_page_content(url):
     try:
@@ -37,11 +41,19 @@ def import_urls(txt):
             urls.append(line.split("|")[0].strip())
     return urls
 
+def categorize_item(item):
+    prompt = f"Categorize this content into one of the following categories: {', '.join(categories)}\n\nTitle: {item['title']}\nDescription: {item['meta_description']}\nCategory:"
+    response = llm.complete(prompt)
+    
+    category = response.strip()
+    if category in categories:
+        return category
+    else:
+        return "Uncategorized"
+
 if __name__ == "__main__":
     print("enter your one-tab urls and press Ctrl-D:")
     urls = import_urls(sys.stdin.read())
     pages = []
     for url in urls:
         pages.append(extract_page_features(url))
-    print(*pages, sep="\n")
-
